@@ -1,0 +1,15 @@
+# depslib dependency file v1.0
+1593981463 source:c:\users\matheus\desktop\trabalholp\trabalholp\main.c
+	<stdio.h>
+	<stdlib.h>
+	"biblioteca.h"
+
+1593981356 source:c:\users\matheus\desktop\trabalholp\trabalholp\funcoes.c
+	<stdio.h>
+	<stdlib.h>
+	<conio.h>
+	<ctype.h>
+	"biblioteca.h"
+
+1593981560 c:\users\matheus\desktop\trabalholp\trabalholp\biblioteca.h
+
