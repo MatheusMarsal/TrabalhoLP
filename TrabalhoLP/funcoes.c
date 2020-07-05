@@ -31,6 +31,9 @@ void inicializar()
 }
 void cadastrar(int p)
 {
+    FILE * arq = abrir("produtos.txt");
+
+
     if(p == T)
     {
         printf("Ocupou toda a memoria \n");
@@ -41,18 +44,24 @@ void cadastrar(int p)
         vCarrinho[p] = (pCarrinho)malloc(sizeof(struct Carrinho));
     }
 
+
     fflush(stdin);
     printf("Insira o codigo de barras: \n");
     vCarrinho[p]->produto.codigoBarras = isNum();
+    fprintf(arq, "\n%d", vCarrinho[p]->produto.codigoBarras);
 
     fflush(stdin);
     printf("Digite a descricao: \n");
     gets(vCarrinho[p]->produto.descricao);
+    fprintf(arq, " %s", vCarrinho[p]->produto.descricao);
     fflush(stdin);
 
     fflush(stdin);
     printf("Digite o preco unitario: \n");
     scanf("%f", &vCarrinho[p]->produto.precoUnit);
+    fprintf(arq, " %.2f", vCarrinho[p]->produto.precoUnit);
+
+    fclose(arq);
 }
 void imprimir(int codBarras){
     int i;
@@ -87,12 +96,15 @@ void imprimirTodos(){
     }
     system("pause");
 }
-
-
+FILE *abrir(char * caminho)
+{
+    FILE * p_arquivo = fopen(caminho, "a");
+    return p_arquivo;
+}
 
 int isNum()
 {
-    char digitado[10]; // Armazena o que foi digitado pelo usuário
+    char digitado[30]; // Armazena o que foi digitado pelo usuário
     char c; // Armazena cada caractere digitado pelo usuário
     int i = 0; // Variável para controlar o índice do vetor de caracteres
     int numero = 0; // Variável para armazenar a conversão do que foi digitado pelo usuário

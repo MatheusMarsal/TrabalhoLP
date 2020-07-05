@@ -21,6 +21,9 @@ void imprimir(int codBarras);
 //Imprimir todos os dados
 void imprimirTodos();
 
+//Abre o arquivo pelo caminho especificado
+FILE *abrir(char * caminho);
+
 //Verifica se o usuario digitou somente numeros
 int isNum();
 
