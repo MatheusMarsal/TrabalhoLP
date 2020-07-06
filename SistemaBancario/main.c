@@ -9,7 +9,7 @@ int main()
     int p = inicializar();
     int opc = 0;
     int cons = 0;
-    int codigoBarras;
+    int cpf;
 
 
     printf("LOADING COMPLETO!\n");
@@ -18,13 +18,13 @@ int main()
     {
         system("cls");
 
-        printf("\nFluxo de caixa\n\n");
+        printf("\n-= Banco LP S/A =-\n\n");
 
         printf("1.: Cadastrar \n");
-        printf("2.: Consultar preco do produto\n");
-        printf("3.: Exibir todos \n");
-        printf("4.: Quantidade de produtos cadastrados \n");
-        printf("5.: Abrir operacao de venda \n");
+        printf("2.: Consultar uma conta\n");
+        printf("3.: Exibir todas \n");
+        printf("4.: Quantidade de conta cadastrados \n");
+        //printf("5.: Abrir operacao na conta\n");
         printf("9.: Sair \n\n");
 
         printf("Digite a operacao que deseja realizar: \n");
@@ -45,11 +45,11 @@ int main()
 
                 fflush(stdin);
 
-                printf("Digite o codigo de barras: \n");
-                codigoBarras = isNum();
+                printf("Digite o CPF: \n");
+                cpf = isNum();
                 printf("\n");
 
-                cons = consultar(codigoBarras, p);
+                cons = consultar(cpf, p);
 
                 break;
 
@@ -63,26 +63,23 @@ int main()
             case 4:
                 system("cls");
 
-                printf("Quantidade de produtos cadastrados: %d \n", p);
+                printf("Quantidade de contas cadastrados: %d \n", p);
 
                 system("pause");
-
                 break;
 
-            case 5:
-                system("cls");
+            //case 5:
+                //system("cls");
 
-                abrirVenda(p);
+                //abrirOperacoes(p);
 
-                system("pause");
-
-                break;
+                //system("pause");
+                //break;
 
             case 9:
                 system("cls");
 
-                printf("Finalizou o fluxo de caixa! \n");
-                printf("Logoff realizado com sucesso! \n");
+                printf("Logout com sucesso! \n");
 
                 return 0;
 
