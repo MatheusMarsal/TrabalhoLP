@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <inttypes.h>
 #include "biblioteca.h"
 
 int main()
@@ -9,7 +10,7 @@ int main()
     int p = inicializar();
     int opc = 0;
     int cons = 0;
-    int cpf;
+    int64_t cpf;
 
 
     printf("LOADING COMPLETO!\n");
@@ -24,7 +25,7 @@ int main()
         printf("2.: Consultar uma conta\n");
         printf("3.: Exibir todas \n");
         printf("4.: Quantidade de conta cadastrados \n");
-        //printf("5.: Abrir operacao na conta\n");
+        printf("5.: Abrir menu de operacao na conta\n");
         printf("9.: Sair \n\n");
 
         printf("Digite a operacao que deseja realizar: \n");
@@ -35,6 +36,8 @@ int main()
         switch(opc)
         {
             case 1:
+                system("cls");
+
                 cadastrar(p);
                 //deslocar a posicao
                 p++;
@@ -68,18 +71,18 @@ int main()
                 system("pause");
                 break;
 
-            //case 5:
-                //system("cls");
+            case 5:
+                system("cls");
 
-                //abrirOperacoes(p);
+                abrirOperacoes(p);
 
-                //system("pause");
-                //break;
+                system("pause");
+                break;
 
             case 9:
                 system("cls");
 
-                printf("Logout com sucesso! \n");
+                printf("Logoff com sucesso! \n");
 
                 return 0;
 

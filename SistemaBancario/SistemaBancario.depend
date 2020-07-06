@@ -1,12 +1,14 @@
 # depslib dependency file v1.0
-1594045709 source:c:\users\matheus\desktop\trabalholp\sistemabancario\main.c
+1594057847 source:c:\users\matheus\desktop\trabalholp\sistemabancario\main.c
 	<stdio.h>
 	<stdlib.h>
+	<inttypes.h>
 	"biblioteca.h"
 
-1594045989 c:\users\matheus\desktop\trabalholp\sistemabancario\biblioteca.h
+1594058580 c:\users\matheus\desktop\trabalholp\sistemabancario\biblioteca.h
+	<inttypes.h>
 
-1594049564 source:c:\users\matheus\desktop\trabalholp\sistemabancario\funcoes.c
+1594061439 source:c:\users\matheus\desktop\trabalholp\sistemabancario\funcoes.c
 	<stdio.h>
 	<stdlib.h>
 	<conio.h>

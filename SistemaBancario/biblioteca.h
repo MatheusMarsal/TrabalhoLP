@@ -1,3 +1,4 @@
+#include <inttypes.h>
 //Definindo o tamanho maximo do vetor
 #define T 100
 
@@ -16,7 +17,7 @@ int inicializar();
 void cadastrar(int p);
 
 //Imprimir os dados da conta pelo CPF informado
-int consultar(int cpf, int lim);
+int consultar(int64_t cpf, int lim);
 
 //Imprimir todos as contas cadastrados
 void imprimirTodos(int lim);
@@ -25,8 +26,15 @@ void imprimirTodos(int lim);
 FILE *abrirArqEscrever(char * caminho);
 FILE *abrirArqLeitura(char *caminho);
 
-
+//Abre o menu de operações casa o CPF não for invalido
 void abrirOperacoes(int lim);
+
+//Realiza movimentações na conta
+void realizarDeposito(int cons, int lim);
+void realizarSaque(int cons, int lim);
+
+//Atualizar o arquivos contas
+void atualizarArqContas(int lim);
 
 //Verifica se o usuario digitou somente numeros
 int isNum();

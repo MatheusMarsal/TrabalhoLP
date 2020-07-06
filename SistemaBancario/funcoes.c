@@ -3,14 +3,14 @@
 #include <conio.h> // Para utilizar o getch()
 #include <ctype.h> // Para utilizar o isdigit()
 #include <string.h>
-#include <inttypes.h>
+#include <inttypes.h> //não consegui fazer bom uso...
 #include "biblioteca.h"
 #define T 100
 
 struct Cliente
 {
     char nome[256];
-    int64_t cpf;
+    int cpf;
 };
 
 struct Conta
@@ -61,11 +61,9 @@ int inicializar()
             vConta[p] = (pConta)malloc(sizeof(struct Conta));
         }
 
-        vConta[p]->cliente.cpf = 1ll;
-
         fflush(stdin);
         fscanf(arqContas, "%d", &vConta[p]->numero_da_conta);
-        fscanf(arqContas, "%"PRId64"", &vConta[p]->cliente.cpf);
+        fscanf(arqContas, "%d", &vConta[p]->cliente.cpf);
         fscanf(arqContas, "%s", vConta[p]->cliente.nome);
         fscanf(arqContas, "%f", &vConta[p]->saldo);
 
@@ -98,7 +96,7 @@ void cadastrar(int p)
     fflush(stdin);
     printf("Insira o cpf do cliente: \n");
     vConta[p]->cliente.cpf = isNum();
-    fprintf(arqContas, " %"PRId64"", vConta[p]->cliente.cpf);
+    fprintf(arqContas, " %d", vConta[p]->cliente.cpf);
 
     fflush(stdin);
     printf("Digite o nome do cliente: (Favor substituir espacos por _)\n");
@@ -112,7 +110,7 @@ void cadastrar(int p)
 
     fclose(arqContas);
 }
-int consultar(int cpf, int lim){
+int consultar(int64_t cpf, int lim){
     int i;
 
     for(i = 0; i < lim; i++)
@@ -123,7 +121,7 @@ int consultar(int cpf, int lim){
             {
                 printf("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n");
                 printf("Conta num.: %d \n", vConta[i]->numero_da_conta);
-                printf("cpf:        %"PRId64" \n", vConta[i]->cliente.cpf);
+                printf("cpf:        %d \n", vConta[i]->cliente.cpf);
                 printf("Nome:       %s \n", vConta[i]->cliente.nome);
                 printf("Saldo:      %.2f reais \n", vConta[i]->saldo);
                 printf("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n\n");
@@ -144,7 +142,7 @@ void imprimirTodos(int lim){
         {
             printf("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n");
             printf("Conta num.: %d \n", vConta[i]->numero_da_conta);
-            printf("cpf:        %"PRId64" \n", vConta[i]->cliente.cpf);
+            printf("cpf:        %d \n", vConta[i]->cliente.cpf);
             printf("Nome:       %s \n", vConta[i]->cliente.nome);
             printf("Saldo:      %.2f reais \n", vConta[i]->saldo);
             printf("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n\n");
@@ -163,92 +161,247 @@ FILE *abrirArqLeitura(char *caminho)
     return p_arquivo;
 }
 
-/* void abrirOperac(int lim)
+ void abrirOperacoes(int lim)
 {
-    float precoTotalCompra = 0;
-    int codigoBarras;
-    int quantidade;
+    int cpf;
     int cons;
-    int quantidadeItems = 0;
+    int opc = 0;
 
-    FILE *arqCompra = abrirArqEscrever("relatorio.txt");
+    system("cls");
 
-    //printf("\n\n -= Relatorio de uso do Sistema bancanrio - Banco LP S\\A =- ");
-    fprintf(arqCompra, "\n\n -= Relatorio de uso do Sistema bancanrio - Banco LP S\\A \n\n");
+    fflush(stdin);
 
-    while(lim)
+    printf("Digite o CPF do cliente para fazer as operacoes: \n");
+    cpf = isNum();
+    printf("\n");
+
+    cons = consultar(cpf, lim);
+
+    if(cons < 0)
     {
-        fflush(stdin);
+        printf("\nVoltando ao menu principal!\n\n");
 
-        printf("\n\nDigite o codigo de barras: \n");
-        codigoBarras = isNum();
+        return;
+    }
 
-        printf("\n");
+    FILE *arqRelatorio = abrirArqEscrever("relatorio.txt");
 
-        if(codigoBarras == 777)
+    fprintf(arqRelatorio, "\n\n -= Relatorio de uso do Sistema Bancario - Banco LP S\\A \n\n");
+
+    fclose(arqRelatorio);
+
+    do
+    {
+        FILE *arqRelatorio = abrirArqEscrever("relatorio.txt");
+
+        system("cls");
+
+        printf("\n-= Banco LP S/A =-\n\n");
+
+        printf("1.: Deposito \n");
+        printf("2.: Consultar saldo\n");
+        printf("3.: Saque \n");
+        printf("9.: Voltar menu principal \n\n");
+
+        printf("Digite a operacao que deseja realizar: \n");
+        opc = isNum();
+
+        switch(opc)
         {
+            case 1:
+                system("cls");
 
-            printf("\n\nFim da operacao!\n\n");
-            if(precoTotalCompra)
-            {
-                printf("Valor total atual da compra:   %.2f reais\n\n", precoTotalCompra);
+                fclose(arqRelatorio);
 
-                fprintf(arqCompra ,"-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n");
-                fprintf(arqCompra ,"Valor total do compra: %.2f reais\n", precoTotalCompra);
-                fprintf(arqCompra ,"-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n");
-            }
-            else
-            {
-                fprintf(arqCompra ,"\nCupom em branco!\n");
-            }
+                realizarDeposito(cons, lim);
 
-            fclose(arqCompra);
+                break;
 
-            return;
+            case 2:
+                system("cls");
+
+                printf("Saldo atual de %s: %.2f reais\n", vConta[cons]->cliente.nome, vConta[cons]->saldo);
+
+                fprintf(arqRelatorio ,"Saldo atual de %s: %.2f \n", vConta[cons]->cliente.nome, vConta[cons]->saldo);
+                fprintf(arqRelatorio ,"-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n");
+
+                atualizarArqContas(lim);
+
+                fclose(arqRelatorio);
+
+                system("pause");
+
+                break;
+
+            case 3:
+                system("cls");
+
+                fclose(arqRelatorio);
+
+                realizarSaque(cons, lim);
+
+                break;
+
+            case 9:
+                system("cls");
+
+                printf("Voltando ao menu principal! \n\n");
+
+                fprintf(arqRelatorio ,"Fim da operacao!\n");
+                fprintf(arqRelatorio ,"-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n");
+
+                fclose(arqRelatorio);
+
+                return;
+
+                break;
+
+            default:
+                system("cls");
+
+                fclose(arqRelatorio);
+
+                printf("Opcao invalida \n\n");
+
+                system("pause");
         }
 
-        cons = consultar(codigoBarras, lim);
+    } while(opc != 9);
 
-        if(cons >= 0)
+}
+void realizarDeposito(int cons, int lim)
+{
+    float valorDeposito;
+
+    FILE *arqRelatorio = abrirArqEscrever("relatorio.txt");
+
+    system("cls");
+
+    printf("Digite o valor do deposito para %s:\n", vConta[cons]->cliente.nome);
+    printf("(Lembrando que nao se faz deposito de moedas!)\n");
+    valorDeposito = isNum();
+
+    if(valorDeposito)
+    {
+        vConta[cons]->saldo = vConta[cons]->saldo + valorDeposito;
+
+        printf("Deposito de %.2f real(is) na conta de %s foi realizado com sucesso!\n\n", valorDeposito, vConta[cons]->cliente.nome);
+
+        fprintf(arqRelatorio ,"Deposito de %.2f real(is) na conta de %s foi realizado com sucesso!\n", valorDeposito, vConta[cons]->cliente.nome);
+        fprintf(arqRelatorio ,"-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n");
+
+        system("pause");
+
+        fclose(arqRelatorio);
+
+        atualizarArqContas(lim);
+
+        return;
+    }
+
+    printf("Deposito nao foi realizado! Motivo: valor nulo!\n\n");
+
+    fclose(arqRelatorio);
+
+    system("pause");
+
+}
+void realizarSaque(int cons, int lim)
+{
+    float valorSaque;
+
+    FILE *arqRelatorio = abrirArqEscrever("relatorio.txt");
+
+    system("cls");
+
+    if(vConta[cons]->saldo > 0)
+    {
+        printf("Digite o valor do saque para %s:\n", vConta[cons]->cliente.nome);
+        printf("(Lembrando que nao se faz saque de moedas!)\n");
+        valorSaque = isNum();
+
+        if(vConta[cons]->saldo >= valorSaque)
         {
-            do
-            {
-                printf("\n\nDigite a quantidade deste item: \n");
-                quantidade = isNum();
+            vConta[cons]->saldo = vConta[cons]->saldo - valorSaque;
 
-            } while(quantidade < 1);
+            printf("Saque de %.2f real(is) na conta de %s foi realizado com sucesso!\n\n", valorSaque, vConta[cons]->cliente.nome);
 
-            quantidadeItems++;
-
-            printf("\nNumero do item:               %d \n", quantidadeItems);
-
-            vConta[cons]->quantidade = quantidade;
-            vConta[cons]->totalPrecoItem = vConta[cons]->produto.precoUnit * vConta[cons]->quantidade;
-
-
-            printf("\nValor total do item:         %.2f reais\n", vConta[cons]->totalPrecoItem);
-
-            precoTotalCompra += vConta[cons]->totalPrecoItem;
-
-            printf("Valor total atual da compra:   %.2f reais\n\n", precoTotalCompra);
+            fprintf(arqRelatorio ,"Saque de %.2f real(is) na conta de %s foi realizado com sucesso!\n", valorSaque, vConta[cons]->cliente.nome);
+            fprintf(arqRelatorio ,"-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n");
 
             system("pause");
 
-            system("cls");
+            fclose(arqRelatorio);
 
-            fprintf(arqCompra ,"-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n");
-            fprintf(arqCompra ,"#:                     %d \n", quantidadeItems);
-            fprintf(arqCompra ,"Cod. Barra:            %d \n", vConta[cons]->produto.codigoBarras);
-            fprintf(arqCompra ,"Descricao:             %s \n", vConta[cons]->produto.descricao);
-            fprintf(arqCompra ,"Valor unit:            %.2f reais\n", vConta[cons]->produto.precoUnit);
-            fprintf(arqCompra ,"Quantidade:            %d unidade(s)\n", vConta[cons]->quantidade);
-            fprintf(arqCompra ,"Valor total do item:   %.2f reais\n", vConta[cons]->totalPrecoItem);
+            atualizarArqContas(lim);
+
+            return;
         }
     }
-} */
+
+    printf("Saque nao foi realizado! Motivo: sem saldo!\n");
+
+    fclose(arqRelatorio);
+
+    system("pause");
+}
+void atualizarArqContas(int lim)
+{
+    int linhas = lim;
+    int p;
+
+    FILE *arqContas = fopen("contas.txt", "w");
+
+    for(p = 0; p < linhas; p++)
+    {
+        if(p == T)
+        {
+            printf("Ocupou toda a memoria \n");
+            exit(1);
+        }
+
+        if(vConta[p] == NULL)
+        {
+            vConta[p] = (pConta)malloc(sizeof(struct Conta));
+        }
+
+        fflush(stdin);
+        if(p > 0)
+        {
+            fprintf(arqContas, "\n");
+        }
+
+        fprintf(arqContas, "%d", vConta[p]->numero_da_conta);
+        fprintf(arqContas, " %d", vConta[p]->cliente.cpf);
+        fprintf(arqContas, " %s", vConta[p]->cliente.nome);
+        fprintf(arqContas, " %.2f", vConta[p]->saldo);
+
+        printf("\n\nSaldo atual: %.2f\n\n", vConta[p]->saldo);
+
+        system("pause");
+
+        if(p == (linhas - 2))
+        {
+            fprintf(arqContas, "\n");
+
+            p++;
+
+            fprintf(arqContas, "%d", vConta[p]->numero_da_conta);
+            fprintf(arqContas, " %d", vConta[p]->cliente.cpf);
+            fprintf(arqContas, " %s", vConta[p]->cliente.nome);
+            fprintf(arqContas, " %.2f", vConta[p]->saldo);
+
+            fclose(arqContas);
+
+            return;
+        }
+    }
+}
+
+
 int isNum()
 {
-    char digitado[30]; // Armazena o que foi digitado pelo usuário
+    char digitado[13]; // Armazena o que foi digitado pelo usuário
     char c; // Armazena cada caractere digitado pelo usuário
     int i = 0; // Variável para controlar o índice do vetor de caracteres
     int numero = 0; // Variável para armazenar a conversão do que foi digitado pelo usuário
