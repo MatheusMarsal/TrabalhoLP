@@ -9,22 +9,23 @@ typedef struct Produto *pProduto;
 //para Carrinho
 pCarrinho vCarrinho[T];
 
-//Inicializar o vetor (desalocar os lixos de memoria)
+//Inicializar o vetor (desalocar os lixos de memoria) e alimentar vCarrinho com os produtos do arquivo texto
 int inicializar();
 
 //Solicitar a leitura dos dados e armazenar
 //na posicao p informada do vetor
 void cadastrar(int p);
 
-//Imprimir os dados de um aluno de ra informado
+//Imprimir os dados do produto pelo codigo de barras informado
 int consultar(int codBarras, int lim);
 
-//Imprimir todos os dados
+//Imprimir todos os produtos cadastrados
 void imprimirTodos(int lim);
 
 //Abre o arquivo pelo caminho especificado
 FILE *abrirArqEscrever(char * caminho);
 FILE *abrirArqLeitura(char *caminho);
+
 
 void abrirVenda(int lim);
 

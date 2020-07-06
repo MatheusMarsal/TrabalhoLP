@@ -115,11 +115,11 @@ int consultar(int codBarras, int lim){
         {
             if(codBarras == vCarrinho[i]->produto.codigoBarras)
             {
-                printf("=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=\n");
+                printf("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n");
                 printf("Descricao:    %s \n", vCarrinho[i]->produto.descricao);
                 printf("Valor unit:   %.2f reais\n", vCarrinho[i]->produto.precoUnit);
                 printf("Cod. Barra:   %d \n", vCarrinho[i]->produto.codigoBarras);
-                printf("=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=\n\n");
+                printf("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n\n");
                 system("pause");
                 return i;
             }
@@ -135,11 +135,11 @@ void imprimirTodos(int lim){
     {
         if(vCarrinho[i] != NULL)
         {
-            printf("=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=\n");
+            printf("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n");
             printf("Descricao:    %s \n", vCarrinho[i]->produto.descricao);
             printf("Valor unit:   %.2f reais\n", vCarrinho[i]->produto.precoUnit);
             printf("Cod. Barra:   %d \n", vCarrinho[i]->produto.codigoBarras);
-            printf("=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=\n\n");
+            printf("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n\n");
         }
     }
     system("pause");
@@ -161,9 +161,12 @@ void abrirVenda(int lim)
     int codigoBarras;
     int quantidade;
     int cons;
-    int p = 0;
+    int quantidadeItems = 0;
+
+    FILE *arqCompra = abrirArqEscrever("comrpa.txt");
 
     printf("\n\n -= CUPOM FISCAL ELETRONICO - SAT =- ");
+    fprintf(arqCompra, "\n\n -= CUPOM FISCAL ELETRONICO - SAT =- \n\n");
 
     while(lim)
     {
@@ -176,11 +179,23 @@ void abrirVenda(int lim)
 
         if(codigoBarras == 777)
         {
+
             printf("\n\nFim da operacao!\n\n");
             if(precoTotalCompra)
             {
                 printf("Valor total atual da compra:   %.2f reais\n\n", precoTotalCompra);
+
+                fprintf(arqCompra ,"-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n");
+                fprintf(arqCompra ,"Valor total do compra: %.2f reais\n", precoTotalCompra);
+                fprintf(arqCompra ,"-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n");
             }
+            else
+            {
+                fprintf(arqCompra ,"\nCupom em branco!\n");
+            }
+
+            fclose(arqCompra);
+
             return;
         }
 
@@ -195,12 +210,31 @@ void abrirVenda(int lim)
 
             } while(quantidade < 1);
 
-            vCarrinho[p]->quantidade = quantidade;
-            vCarrinho[p]->totalPrecoItem = vCarrinho[cons]->produto.precoUnit * vCarrinho[p]->quantidade;
+            quantidadeItems++;
 
-            printf("\nValor total do item:   %.2f reais\n", vCarrinho[p]->totalPrecoItem);
-            precoTotalCompra += vCarrinho[p]->totalPrecoItem;
-            printf("Valor total atual da compra:   %.2f reais\n", precoTotalCompra);
+            printf("\nNumero do item:               %d \n", quantidadeItems);
+
+            vCarrinho[cons]->quantidade = quantidade;
+            vCarrinho[cons]->totalPrecoItem = vCarrinho[cons]->produto.precoUnit * vCarrinho[cons]->quantidade;
+
+
+            printf("\nValor total do item:         %.2f reais\n", vCarrinho[cons]->totalPrecoItem);
+
+            precoTotalCompra += vCarrinho[cons]->totalPrecoItem;
+
+            printf("Valor total atual da compra:   %.2f reais\n\n", precoTotalCompra);
+
+            system("pause");
+
+            system("cls");
+
+            fprintf(arqCompra ,"-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n");
+            fprintf(arqCompra ,"#:                     %d \n", quantidadeItems);
+            fprintf(arqCompra ,"Cod. Barra:            %d \n", vCarrinho[cons]->produto.codigoBarras);
+            fprintf(arqCompra ,"Descricao:             %s \n", vCarrinho[cons]->produto.descricao);
+            fprintf(arqCompra ,"Valor unit:            %.2f reais\n", vCarrinho[cons]->produto.precoUnit);
+            fprintf(arqCompra ,"Quantidade:            %d unidade(s)\n", vCarrinho[cons]->quantidade);
+            fprintf(arqCompra ,"Valor total do item:   %.2f reais\n", vCarrinho[cons]->totalPrecoItem);
         }
     }
 }
