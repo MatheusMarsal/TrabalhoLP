@@ -1,0 +1,16 @@
+
+
+ -= Relatorio de uso do Sistema Bancario - Banco LP S\A =-
+
+Deposito de 10.00 real(is) na conta de Ma_Ro_Mo foi realizado com sucesso!
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+Saldo atual de Ma_Ro_Mo: 10.00 
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+Deposito de 30.00 real(is) na conta de Ma_Ro_Mo foi realizado com sucesso!
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+Saldo atual de Ma_Ro_Mo: 40.00 
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+Saque de 15.00 real(is) na conta de Ma_Ro_Mo foi realizado com sucesso!
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+Fim da operacao!
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-

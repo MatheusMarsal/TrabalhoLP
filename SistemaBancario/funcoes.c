@@ -186,7 +186,7 @@ FILE *abrirArqLeitura(char *caminho)
 
     FILE *arqRelatorio = abrirArqEscrever("relatorio.txt");
 
-    fprintf(arqRelatorio, "\n\n -= Relatorio de uso do Sistema Bancario - Banco LP S\\A \n\n");
+    fprintf(arqRelatorio, "\n\n -= Relatorio de uso do Sistema Bancario - Banco LP S\\A =-\n\n");
 
     fclose(arqRelatorio);
 
@@ -375,10 +375,6 @@ void atualizarArqContas(int lim)
         fprintf(arqContas, " %d", vConta[p]->cliente.cpf);
         fprintf(arqContas, " %s", vConta[p]->cliente.nome);
         fprintf(arqContas, " %.2f", vConta[p]->saldo);
-
-        printf("\n\nSaldo atual: %.2f\n\n", vConta[p]->saldo);
-
-        system("pause");
 
         if(p == (linhas - 2))
         {

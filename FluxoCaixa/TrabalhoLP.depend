@@ -24,3 +24,8 @@
 
 1594049868 c:\users\matheus\desktop\trabalholp\fluxocaixa\biblioteca.h
 
+1594050159 source:c:\users\matheus\desktop\trabalholp\fluxocaixa\main.c
+	<stdio.h>
+	<stdlib.h>
+	"biblioteca.h"
+

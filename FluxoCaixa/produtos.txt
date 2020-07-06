@@ -98,3 +98,5 @@
 73 Energ_Monster_Juice_460ml 6.98
 74 Energ_Monster_Violet_460ml 6.98
 9999 Mercado_inteiro 1000000000.99
+789456 teste 8.00
+123 teste 8.00

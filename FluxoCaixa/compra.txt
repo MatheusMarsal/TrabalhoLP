@@ -1,0 +1,35 @@
+
+
+ -= CUPOM FISCAL ELETRONICO - SAT =- 
+
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+#:                     1 
+Cod. Barra:            4 
+Descricao:             Miojo_Nissin_Frango_75g 
+Valor unit:            1.19 reais
+Quantidade:            4 unidade(s)
+Valor total do item:   4.76 reais
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+#:                     2 
+Cod. Barra:            6284 
+Descricao:             Leite-Condensado_Jussara_395g 
+Valor unit:            3.15 reais
+Quantidade:            2 unidade(s)
+Valor total do item:   6.30 reais
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+#:                     3 
+Cod. Barra:            7517 
+Descricao:             Milho_Fujini_300g 
+Valor unit:            4.96 reais
+Quantidade:            1 unidade(s)
+Valor total do item:   4.96 reais
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+#:                     4 
+Cod. Barra:            1421 
+Descricao:             Coca-Cola_2LT 
+Valor unit:            5.29 reais
+Quantidade:            2 unidade(s)
+Valor total do item:   10.58 reais
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+Valor total do compra: 26.60 reais
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
