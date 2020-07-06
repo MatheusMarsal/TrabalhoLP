@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <conio.h> // Para utilizar o getch()
 #include <ctype.h> // Para utilizar o isdigit()
+#include <string.h>
 #include "biblioteca.h"
 #define T 100
 
@@ -10,29 +11,72 @@ struct Produto
     int codigoBarras;
     char descricao[70];
     float precoUnit;
-
 };
 
 struct Carrinho
 {
     struct Produto produto;
     int quantidade;
-    float totalCarrinho;
+    float totalPrecoItem;
 };
 
-void inicializar()
+int inicializar()
 {
     int i;
+    int p = 0;
+    int linhas = 1;
+    char c, fimLinha = '\n';
 
     for(i = 0; i < 100; i++)
     {
         vCarrinho[i] = NULL;
     }
+
+    FILE * arqProdutos = abrirArqLeitura("produtos.txt");
+
+    //Lendo o arquivo 1 por 1
+    while(fread (&c, sizeof(char), 1, arqProdutos))
+    {
+        if(c == fimLinha)
+        {
+            linhas++;
+        }
+    }
+    fclose(arqProdutos);
+
+    abrirArqLeitura("produtos.txt");
+
+    do
+    {
+        fflush(stdin);
+
+        if(p == T)
+        {
+            printf("Ocupou toda a memoria \n");
+            exit(1);
+        }
+
+        if(vCarrinho[p] == NULL)
+        {
+            vCarrinho[p] = (pCarrinho)malloc(sizeof(struct Carrinho));
+        }
+
+        fflush(stdin);
+        fscanf(arqProdutos, "%d", &vCarrinho[p]->produto.codigoBarras);
+        fscanf(arqProdutos, "%s", vCarrinho[p]->produto.descricao);
+        fscanf(arqProdutos, "%f", &vCarrinho[p]->produto.precoUnit);
+
+        p++;
+
+    } while(p < linhas);
+
+    fclose(arqProdutos);
+
+    return p;
 }
 void cadastrar(int p)
 {
-    FILE * arq = abrir("produtos.txt");
-
+    FILE * arqProdutos = abrirArqEscrever("produtos.txt");
 
     if(p == T)
     {
@@ -44,50 +88,54 @@ void cadastrar(int p)
         vCarrinho[p] = (pCarrinho)malloc(sizeof(struct Carrinho));
     }
 
-
     fflush(stdin);
     printf("Insira o codigo de barras: \n");
     vCarrinho[p]->produto.codigoBarras = isNum();
-    fprintf(arq, "\n%d", vCarrinho[p]->produto.codigoBarras);
+    fprintf(arqProdutos, "\n%d", vCarrinho[p]->produto.codigoBarras);
 
     fflush(stdin);
     printf("Digite a descricao: \n");
     gets(vCarrinho[p]->produto.descricao);
-    fprintf(arq, " %s", vCarrinho[p]->produto.descricao);
+    fprintf(arqProdutos, " %s", vCarrinho[p]->produto.descricao);
     fflush(stdin);
 
     fflush(stdin);
     printf("Digite o preco unitario: \n");
     scanf("%f", &vCarrinho[p]->produto.precoUnit);
-    fprintf(arq, " %.2f", vCarrinho[p]->produto.precoUnit);
+    fprintf(arqProdutos, " %.2f", vCarrinho[p]->produto.precoUnit);
 
-    fclose(arq);
+    fclose(arqProdutos);
 }
-void imprimir(int codBarras){
+int consultar(int codBarras, int lim){
     int i;
-    for(i = 0; i < 100; i++)
+
+    for(i = 0; i < lim; i++)
     {
         if(vCarrinho[i] != NULL)
         {
             if(codBarras == vCarrinho[i]->produto.codigoBarras)
             {
-                system("cls");
+                printf("=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=\n");
                 printf("Descricao:    %s \n", vCarrinho[i]->produto.descricao);
                 printf("Valor unit:   %.2f reais\n", vCarrinho[i]->produto.precoUnit);
                 printf("Cod. Barra:   %d \n", vCarrinho[i]->produto.codigoBarras);
+                printf("=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=\n\n");
                 system("pause");
+                return i;
             }
         }
     }
-    printf("Nenhum produto com este codigo de barras \n");
+    printf("Nenhum produto com este codigo de barras! \n\n");
     system("pause");
+    return -1;
 }
-void imprimirTodos(){
+void imprimirTodos(int lim){
     int i;
-    for(i = 0; i < 100; i++)
+    for(i = 0; i < lim; i++)
     {
         if(vCarrinho[i] != NULL)
         {
+            printf("=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=\n");
             printf("Descricao:    %s \n", vCarrinho[i]->produto.descricao);
             printf("Valor unit:   %.2f reais\n", vCarrinho[i]->produto.precoUnit);
             printf("Cod. Barra:   %d \n", vCarrinho[i]->produto.codigoBarras);
@@ -96,12 +144,66 @@ void imprimirTodos(){
     }
     system("pause");
 }
-FILE *abrir(char * caminho)
+FILE *abrirArqEscrever(char *caminho)
 {
-    FILE * p_arquivo = fopen(caminho, "a");
+    FILE *p_arquivo = fopen(caminho, "a");
+    return p_arquivo;
+}
+FILE *abrirArqLeitura(char *caminho)
+{
+    FILE * p_arquivo = fopen(caminho, "r");
     return p_arquivo;
 }
 
+void abrirVenda(int lim)
+{
+    float precoTotalCompra = 0;
+    int codigoBarras;
+    int quantidade;
+    int cons;
+    int p = 0;
+
+    printf("\n\n -= CUPOM FISCAL ELETRONICO - SAT =- ");
+
+    while(lim)
+    {
+        fflush(stdin);
+
+        printf("\n\nDigite o codigo de barras: \n");
+        codigoBarras = isNum();
+
+        printf("\n");
+
+        if(codigoBarras == 777)
+        {
+            printf("\n\nFim da operacao!\n\n");
+            if(precoTotalCompra)
+            {
+                printf("Valor total atual da compra:   %.2f reais\n\n", precoTotalCompra);
+            }
+            return;
+        }
+
+        cons = consultar(codigoBarras, lim);
+
+        if(cons >= 0)
+        {
+            do
+            {
+                printf("\n\nDigite a quantidade deste item: \n");
+                quantidade = isNum();
+
+            } while(quantidade < 1);
+
+            vCarrinho[p]->quantidade = quantidade;
+            vCarrinho[p]->totalPrecoItem = vCarrinho[cons]->produto.precoUnit * vCarrinho[p]->quantidade;
+
+            printf("\nValor total do item:   %.2f reais\n", vCarrinho[p]->totalPrecoItem);
+            precoTotalCompra += vCarrinho[p]->totalPrecoItem;
+            printf("Valor total atual da compra:   %.2f reais\n", precoTotalCompra);
+        }
+    }
+}
 int isNum()
 {
     char digitado[30]; // Armazena o que foi digitado pelo usuário

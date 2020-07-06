@@ -6,10 +6,11 @@ int main()
 {
     printf("\nLOADING...\n\n");
 
-    int p = 0;
-    int codigoBarras = 0;
+    int p = inicializar();
     int opc = 0;
-    inicializar();
+    int cons = 0;
+    int codigoBarras;
+
 
     printf("LOADING COMPLETO!\n");
 
@@ -20,9 +21,10 @@ int main()
         printf("\nFluxo de caixa\n\n");
 
         printf("1.: Cadastrar \n");
-        printf("2.: Consultar produto \n");
+        printf("2.: Consultar preco do produto\n");
         printf("3.: Exibir todos \n");
         printf("4.: Quantidade de Cadastrados \n");
+        printf("5.: Abrir operacao de venda \n");
         printf("9.: Sair \n\n");
 
         printf("Digite a operacao que deseja realizar: \n");
@@ -40,26 +42,36 @@ int main()
 
             case 2:
                 system("cls");
+
                 fflush(stdin);
 
                 printf("Digite o codigo de barras: \n");
-                scanf("%d", &codigoBarras);
+                codigoBarras = isNum();
+                printf("\n");
 
-                imprimir(codigoBarras);
+                cons = consultar(codigoBarras, p);
 
                 break;
 
             case 3:
                 system("cls");
 
-                imprimirTodos();
+                imprimirTodos(p);
 
                 break;
 
             case 4:
                 system("cls");
 
-                printf("Quantidade de cadastrados: %d \n", p);
+                printf("Quantidade de produtos cadastrados: %d \n", p);
+
+                system("pause");
+                break;
+
+            case 5:
+                system("cls");
+
+                abrirVenda(p);
 
                 system("pause");
                 break;
